@@ -1,55 +1,703 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy tính lãi suất ngân hàng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <title>Lola's Web Phone!</title>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
 
-    <meta property="og:title" content="Teleprompter!">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@lady_ada_king">
-    <meta name="twitter:creator" content="@lady_ada_king">
-    <meta property="og:url" content="https://teleprompter.glitch.me">
-    <meta property="og:description" content="Cast your computer to your phone or tablet to use it in a teleprompter">
-    <meta name="description" content="Cast your computer to your phone or tablet to use it in a teleprompter"/>
-    <!--     <meta property="og:image" content="https://cdn.glitch.com/1695682e-08d3-41c8-a322-1e235b5782e1%2Fimage.png?v=1561449954420"> -->
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/index.css">
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
 
-    <link rel="manifest" href="/manifest.json">
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-    <!-- import the webpage's javascript file -->
-    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
-    <script src="/script.js" defer></script>
+        .card-body {
+            padding: 20px;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .result-section {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 18px;
+            color: #667eea;
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .payment-table th,
+        .payment-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .payment-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .payment-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+
+        .grace-period {
+            background: #fff3cd !important;
+            color: #856404;
+        }
+
+        .promo-period {
+            background: #d1ecf1 !important;
+            color: #0c5460;
+        }
+
+        .number-format {
+            text-align: right;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .early-payment-row {
+            background: #fff3cd !important;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .penalty-row {
+            background: #f8d7da !important;
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-table {
+                font-size: 14px;
+            }
+            
+            .payment-table th,
+            .payment-table td {
+                padding: 8px 4px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Phone a friend</h1>
-    <p id="caststatus" class="big">
-        Connecting...
-    </p>
-    <p>
-        Please use headphones!
-    </p>
-    <button class="call-btn">
-        Call
-    </button>
-    <section class="call-container" hidden>
-        <div class="audio-container">
-            <p>You're automatically muted, unmute yourself!</p>
-            <video controls id="remoteVideo" muted autoplay></video>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Máy tính lãi suất ngân hàng</h1>
+                <p>Tính toán với ân hạn và lãi suất ưu đãi</p>
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="loanAmount">Số tiền muốn vay (VNĐ)</label>
+                        <input type="text" id="loanAmount" value="800,000,000" min="0" oninput="formatNumberInput(this)">
+                    </div>
+                    <div class="form-group">
+                        <label for="interestRate">Lãi suất (%/năm)</label>
+                        <input type="number" id="interestRate" value="10" min="0" max="100" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="loanTerm">Số tháng vay</label>
+                        <input type="number" id="loanTerm" value="240" min="1">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="gracePeriod">Thời gian ân hạn (tháng)</label>
+                        <input type="number" id="gracePeriod" value="12" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="promoRate">Lãi suất ưu đãi (%/năm)</label>
+                        <input type="number" id="promoRate" value="5.5" min="0" max="100" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="promoPeriod">Thời gian ưu đãi (tháng)</label>
+                        <input type="number" id="promoPeriod" value="36" min="0">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="startDate">Ngày giải ngân</label>
+                        <input type="date" id="startDate" value="2025-09-12">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="earlyPayment" onchange="toggleEarlyPayment()" style="margin-right: 8px;" checked>
+                            Trả nợ trước hạn
+                        </label>
+                    </div>
+                </div>
+
+                <div id="earlyPaymentInputs" class="input-group" style="display: block;">
+                    <div class="form-group">
+                        <label for="earlyPaymentMonth">Thời điểm trả nợ (tháng thứ)</label>
+                        <input type="number" id="earlyPaymentMonth" value="48" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="penaltyRate">Phạt lãi suất (%)</label>
+                        <input type="number" id="penaltyRate" value="2" min="0" max="100" step="0.01">
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="btn" onclick="calculateLoan()">Tính toán</button>
+                    <button class="btn" onclick="showPaymentSchedule()">Xem lịch trả nợ</button>
+                </div>
+
+                <div id="results" class="result-section" style="display: none;">
+                    <h3>Kết quả tính toán</h3>
+                    <div class="result-item">
+                        <span>Số tiền gốc phải trả hàng tháng:</span>
+                        <span id="monthlyPrincipal" class="highlight">0 VNĐ</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Tổng gốc phải trả:</span>
+                        <span id="totalPrincipal">0 VNĐ</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Tổng lãi phải trả:</span>
+                        <span id="totalInterest">0 VNĐ</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Tổng số tiền cần trả:</span>
+                        <span id="totalPayment">0 VNĐ</span>
+                    </div>
+                </div>
+
+                <div id="earlyPaymentInfo" class="result-section" style="display: none;">
+                    <h3>Thông tin trả nợ trước hạn</h3>
+                    <div class="result-item">
+                        <span>Trả nợ vào tháng thứ:</span>
+                        <span id="earlyPaymentMonthDisplay" class="highlight">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Số tiền cần để trả nợ trước hạn:</span>
+                        <span id="earlyPaymentTotal" class="highlight">0 VNĐ</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Phí phạt trả nợ trước hạn:</span>
+                        <span id="earlyPaymentPenalty" class="highlight">0 VNĐ</span>
+                    </div>
+                </div>
+
+                <div id="scheduleModal" style="display: none;">
+                    <h3>Bảng tính lịch trả nợ</h3>
+                    <div id="scheduleTable"></div>
+                </div>
+            </div>
         </div>
-        <button class="hangup-btn">
-            Hang up
-        </button>
-    </section>
-</div>
+    </div>
 
+    <script>
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US').format(Math.round(num));
+        }
 
+        function toggleEarlyPayment() {
+            const checkbox = document.getElementById('earlyPayment');
+            const inputs = document.getElementById('earlyPaymentInputs');
+            
+            if (checkbox.checked) {
+                inputs.style.display = 'block';
+            } else {
+                inputs.style.display = 'none';
+            }
+        }
 
+        function formatNumberInput(input) {
+            // Remove all non-digit characters
+            let value = input.value.replace(/\D/g, '');
+            
+            // Add commas every 3 digits
+            if (value) {
+                value = parseInt(value).toLocaleString('en-US');
+            }
+            
+            // Update the input value
+            input.value = value;
+        }
+
+        function getNumericValue(input) {
+            // Remove commas and return numeric value
+            return parseFloat(input.value.replace(/,/g, '')) || 0;
+        }
+
+        function updateURLWithParams() {
+            // Get current form values
+            const params = new URLSearchParams();
+            
+            // Get the numeric value from the loan amount input (remove commas)
+            const loanAmountInput = document.getElementById('loanAmount');
+            const amount = getNumericValue(loanAmountInput);
+            
+            params.set('amount', amount);
+            params.set('rate', document.getElementById('interestRate').value);
+            params.set('term', document.getElementById('loanTerm').value);
+            params.set('grace', document.getElementById('gracePeriod').value);
+            params.set('promoRate', document.getElementById('promoRate').value);
+            params.set('promoPeriod', document.getElementById('promoPeriod').value);
+            params.set('startDate', document.getElementById('startDate').value);
+            params.set('earlyPayment', document.getElementById('earlyPayment').checked);
+            params.set('earlyMonth', document.getElementById('earlyPaymentMonth').value);
+            params.set('penalty', document.getElementById('penaltyRate').value);
+            
+            // Update URL without page reload
+            const newURL = window.location.pathname + '?' + params.toString();
+            window.history.pushState({}, '', newURL);
+        }
+
+        function loadParamsFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (params.has('amount')) {
+                const amount = parseInt(params.get('amount'));
+                document.getElementById('loanAmount').value = amount.toLocaleString('en-US');
+            }
+            if (params.has('rate')) {
+                document.getElementById('interestRate').value = params.get('rate');
+            }
+            if (params.has('term')) {
+                document.getElementById('loanTerm').value = params.get('term');
+            }
+            if (params.has('grace')) {
+                document.getElementById('gracePeriod').value = params.get('grace');
+            }
+            if (params.has('promoRate')) {
+                document.getElementById('promoRate').value = params.get('promoRate');
+            }
+            if (params.has('promoPeriod')) {
+                document.getElementById('promoPeriod').value = params.get('promoPeriod');
+            }
+            if (params.has('startDate')) {
+                document.getElementById('startDate').value = params.get('startDate');
+            }
+            if (params.has('earlyPayment')) {
+                const isChecked = params.get('earlyPayment') === 'true';
+                document.getElementById('earlyPayment').checked = isChecked;
+                toggleEarlyPayment();
+            }
+            if (params.has('earlyMonth')) {
+                document.getElementById('earlyPaymentMonth').value = params.get('earlyMonth');
+            }
+            if (params.has('penalty')) {
+                document.getElementById('penaltyRate').value = params.get('penalty');
+            }
+        }
+
+        function calculateLoan() {
+            const loanAmount = getNumericValue(document.getElementById('loanAmount')) || 0;
+            const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 0;
+            const gracePeriod = parseInt(document.getElementById('gracePeriod').value) || 0;
+            const promoRate = parseFloat(document.getElementById('promoRate').value) || 0;
+            const promoPeriod = parseInt(document.getElementById('promoPeriod').value) || 0;
+            
+            // Early payment variables
+            const isEarlyPayment = document.getElementById('earlyPayment').checked;
+            const earlyPaymentMonth = parseInt(document.getElementById('earlyPaymentMonth').value) || 0;
+            const penaltyRate = parseFloat(document.getElementById('penaltyRate').value) || 0;
+
+            if (loanAmount <= 0 || loanTerm <= 0) {
+                alert('Vui lòng nhập số tiền vay và thời gian vay hợp lệ');
+                return;
+            }
+
+            if (gracePeriod >= loanTerm) {
+                alert('Thời gian ân hạn phải nhỏ hơn số tháng vay!');
+                return;
+            }
+
+            if (promoPeriod > loanTerm) {
+                alert('Thời gian ưu đãi không được vượt quá số tháng vay!');
+                return;
+            }
+
+            if (isEarlyPayment) {
+                if (earlyPaymentMonth <= gracePeriod) {
+                    alert('Thời điểm trả nợ trước hạn phải sau thời gian ân hạn!');
+                    return;
+                }
+                if (earlyPaymentMonth >= loanTerm) {
+                    alert('Thời điểm trả nợ trước hạn phải nhỏ hơn số tháng vay!');
+                    return;
+                }
+            }
+
+            const monthlyRateNormal = annualRate / 100 / 12;
+            const monthlyRatePromo = promoRate / 100 / 12;
+
+            // Calculate payments during different periods
+            let totalInterest = 0;
+            let currentBalance = loanAmount;
+            let earlyPaymentPenalty = 0;
+
+            // Simulate month by month calculation
+            const schedule = [];
+            let month = 1;
+
+            // Grace period - only interest, no principal
+            for (let i = 0; i < gracePeriod; i++) {
+                let rate = (i < promoPeriod) ? monthlyRatePromo : monthlyRateNormal;
+                let interestPayment = currentBalance * rate;
+                totalInterest += interestPayment;
+
+                schedule.push({
+                    month: month++,
+                    principalPayment: 0,
+                    interestPayment: interestPayment,
+                    totalPayment: interestPayment,
+                    remainingBalance: currentBalance,
+                    isGracePeriod: true,
+                    isPromoRate: i < promoPeriod
+                });
+            }
+
+            // Calculate remaining term after grace period
+            const remainingTerm = loanTerm - gracePeriod;
+            let remainingPromoTerm = Math.max(0, promoPeriod - gracePeriod);
+
+            if (remainingTerm > 0) {
+                // Simple calculation: divide principal evenly across remaining months
+                const monthlyPrincipal = Math.round(currentBalance / remainingTerm);
+
+                // Generate payment schedule for principal repayment period
+                let actualTerm = remainingTerm;
+                
+                // Check if early payment applies
+                if (isEarlyPayment && earlyPaymentMonth > gracePeriod && earlyPaymentMonth < loanTerm) {
+                    actualTerm = earlyPaymentMonth - gracePeriod;
+                }
+                
+                for (let i = 0; i < actualTerm; i++) {
+                    let isPromoMonth = i < remainingPromoTerm;
+                    let rate = isPromoMonth ? monthlyRatePromo : monthlyRateNormal;
+                    
+                    let interestPayment = Math.round(currentBalance * rate);
+                    let principalPayment = monthlyPrincipal;
+                    
+                    // Handle early payment scenario
+                    if (isEarlyPayment && i === actualTerm - 1) {
+                        // Pay off remaining balance early
+                        principalPayment = currentBalance;
+                        // Apply penalty to remaining balance
+                        earlyPaymentPenalty = Math.round(currentBalance * (penaltyRate / 100));
+                    } else if (i === actualTerm - 1 && !isEarlyPayment) {
+                        // Adjust last payment to clear remaining balance (normal scenario)
+                        principalPayment = currentBalance;
+                    }
+                    
+                    let monthlyPayment = principalPayment + interestPayment;
+                    
+                    currentBalance -= principalPayment;
+                    totalInterest += interestPayment;
+
+                    schedule.push({
+                        month: month++,
+                        principalPayment: principalPayment,
+                        interestPayment: interestPayment,
+                        totalPayment: monthlyPayment,
+                        remainingBalance: Math.max(0, currentBalance),
+                        isGracePeriod: false,
+                        isPromoRate: isPromoMonth,
+                        isEarlyPayment: isEarlyPayment && i === actualTerm - 1
+                    });
+                }
+                
+                // Add penalty to total if early payment
+                if (isEarlyPayment && earlyPaymentPenalty > 0) {
+                    totalInterest += earlyPaymentPenalty;
+                    // Add penalty as separate entry in schedule
+                    schedule.push({
+                        month: month,
+                        principalPayment: 0,
+                        interestPayment: earlyPaymentPenalty,
+                        totalPayment: earlyPaymentPenalty,
+                        remainingBalance: 0,
+                        isGracePeriod: false,
+                        isPromoRate: false,
+                        isPenalty: true
+                    });
+                }
+            }
+
+            // Store schedule for later use
+            window.paymentSchedule = schedule;
+
+            // Calculate monthly principal payment using correct formula
+            // Monthly principal = Total loan / (Total months - Grace period months)
+            const remainingTermDisplay = loanTerm - gracePeriod;
+            let monthlyPrincipalAmount = 0;
+            
+            if (remainingTermDisplay > 0) {
+                monthlyPrincipalAmount = Math.round(loanAmount / remainingTermDisplay);
+            }
+
+            // Display results
+            document.getElementById('monthlyPrincipal').textContent = formatNumber(monthlyPrincipalAmount) + ' VNĐ';
+            document.getElementById('totalPrincipal').textContent = formatNumber(loanAmount) + ' VNĐ';
+            document.getElementById('totalInterest').textContent = formatNumber(totalInterest) + ' VNĐ';
+            document.getElementById('totalPayment').textContent = formatNumber(loanAmount + totalInterest) + ' VNĐ';
+            
+            // Hide payment schedule table when calculating
+            document.getElementById('scheduleModal').style.display = 'none';
+            
+            // Show/hide early payment info
+            const earlyPaymentInfo = document.getElementById('earlyPaymentInfo');
+            if (isEarlyPayment && earlyPaymentMonth > 0 && earlyPaymentMonth < loanTerm) {
+                // Find the early payment month in the schedule to get the exact payment amount
+                let lastMonthPayment = 0;
+                if (window.paymentSchedule) {
+                    const earlyPaymentEntry = window.paymentSchedule.find(payment => 
+                        payment.month === earlyPaymentMonth && payment.isEarlyPayment
+                    );
+                    if (earlyPaymentEntry) {
+                        lastMonthPayment = earlyPaymentEntry.totalPayment;
+                    }
+                }
+                
+                // Total early payment = Last month payment + Penalty
+                const totalEarlyPayment = lastMonthPayment + earlyPaymentPenalty;
+                
+                document.getElementById('earlyPaymentMonthDisplay').textContent = earlyPaymentMonth;
+                document.getElementById('earlyPaymentTotal').textContent = formatNumber(totalEarlyPayment) + ' VNĐ';
+                document.getElementById('earlyPaymentPenalty').textContent = formatNumber(earlyPaymentPenalty) + ' VNĐ';
+                earlyPaymentInfo.style.display = 'block';
+            } else {
+                earlyPaymentInfo.style.display = 'none';
+            }
+
+            document.getElementById('results').style.display = 'block';
+            
+            // Update URL with current parameters
+            updateURLWithParams();
+        }
+
+        function showPaymentSchedule() {
+            if (!window.paymentSchedule) {
+                // Auto-trigger calculation if no data exists
+                calculateLoan();
+                if (!window.paymentSchedule) {
+                    return;
+                }
+            }
+
+            const startDate = new Date(document.getElementById('startDate').value);
+            let tableHTML = `
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Kỳ hạn</th>
+                            <th>Ngày trả nợ</th>
+                            <th>Số tiền gốc còn</th>
+                            <th>Tiền gốc trả</th>
+                            <th>Tiền lãi trả</th>
+                            <th>Tổng phải trả</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let totalPrincipal = 0;
+            let totalInterest = 0;
+
+            window.paymentSchedule.forEach((payment, index) => {
+                const paymentDate = new Date(startDate);
+                paymentDate.setMonth(paymentDate.getMonth() + payment.month);
+                
+                totalPrincipal += payment.principalPayment;
+                totalInterest += payment.interestPayment;
+
+                let rowClass = '';
+                let monthLabel = payment.month;
+                
+                if (payment.isPenalty) {
+                    rowClass = 'penalty-row';
+                    monthLabel = 'Phí phạt';
+                } else if (payment.isEarlyPayment) {
+                    rowClass = 'early-payment-row';
+                    monthLabel = payment.month + ' (Trả sớm)';
+                } else if (payment.isGracePeriod) {
+                    rowClass = 'grace-period';
+                } else if (payment.isPromoRate) {
+                    rowClass = 'promo-period';
+                }
+
+                tableHTML += `
+                    <tr class="${rowClass}">
+                        <td>${monthLabel}</td>
+                        <td>${payment.isPenalty ? '-' : paymentDate.toLocaleDateString('vi-VN')}</td>
+                        <td class="number-format">${formatNumber(payment.remainingBalance)}</td>
+                        <td class="number-format">${formatNumber(payment.principalPayment)}</td>
+                        <td class="number-format">${formatNumber(payment.interestPayment)}</td>
+                        <td class="number-format">${formatNumber(payment.totalPayment)}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    <tr style="font-weight: bold; background: #667eea; color: white;">
+                        <td colspan="3">TỔNG</td>
+                        <td class="number-format">${formatNumber(totalPrincipal)}</td>
+                        <td class="number-format">${formatNumber(totalInterest)}</td>
+                        <td class="number-format">${formatNumber(totalPrincipal + totalInterest)}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 10px; font-size: 14px;">
+                <div style="padding: 5px; background: #fff3cd; margin: 5px 0; border-radius: 4px;">
+                    <strong>Ân hạn:</strong> Chỉ trả lãi, không trả gốc
+                </div>
+                <div style="padding: 5px; background: #d1ecf1; margin: 5px 0; border-radius: 4px;">
+                    <strong>Ưu đãi:</strong> Áp dụng lãi suất ưu đãi
+                </div>
+                <div style="padding: 5px; background: #f8f9ff; margin: 5px 0; border-radius: 4px;">
+                    <strong>Thường:</strong> Lãi suất bình thường
+                </div>
+            </div>
+            `;
+
+            document.getElementById('scheduleTable').innerHTML = tableHTML;
+            document.getElementById('scheduleModal').style.display = 'block';
+            
+            // Update URL with current parameters
+            updateURLWithParams();
+        }
+
+        // Initialize with current date and load URL parameters
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            
+            // Load parameters from URL if they exist
+            loadParamsFromURL();
+            
+            // If URL has parameters, automatically calculate
+            if (window.location.search) {
+                // Use setTimeout to ensure DOM is fully ready
+                setTimeout(() => {
+                    calculateLoan();
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
