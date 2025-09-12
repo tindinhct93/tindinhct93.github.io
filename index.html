@@ -117,6 +117,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            min-width: 600px;
         }
 
         .payment-table th,
@@ -183,12 +184,18 @@
             }
             
             .payment-table {
-                font-size: 14px;
+                font-size: 12px;
+                min-width: 550px;
             }
             
             .payment-table th,
             .payment-table td {
-                padding: 8px 4px;
+                padding: 6px 3px;
+                white-space: nowrap;
+            }
+            
+            .container {
+                padding: 10px;
             }
         }
     </style>
@@ -301,7 +308,9 @@
 
                 <div id="scheduleModal" style="display: none;">
                     <h3>Bảng tính lịch trả nợ</h3>
-                    <div id="scheduleTable"></div>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <div id="scheduleTable"></div>
+                    </div>
                 </div>
             </div>
         </div>
