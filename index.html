@@ -1,712 +1,504 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Máy tính lãi suất ngân hàng</title>
+    <title>Tin Dinh - Golang Developer</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
             color: #333;
-            line-height: 1.6;
+            background: #f5f5f5;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .card {
+        
+        .cv-container {
+            max-width: 900px;
+            margin: 15px auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             overflow: hidden;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 95vh;
         }
-
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        /* Left Column */
+        .left-column {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
-            padding: 20px;
+            padding: 30px 25px;
+        }
+        
+        .profile-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 15px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            object-fit: cover;
+        }
+        
+        .name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        
+        .title {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .left-section {
+            margin-bottom: 25px;
+        }
+        
+        .left-section h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #3498db;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .contact-item i {
+            width: 20px;
+            margin-right: 10px;
             text-align: center;
         }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        .input-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        
+        .skill-category {
             margin-bottom: 20px;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
+        
+        .skill-category h4 {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #3498db;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #555;
         }
-
-        input, select {
-            padding: 12px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+        
+        .skill-item {
+            margin-bottom: 6px;
+            font-size: 0.8rem;
         }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
+        
+        .skill-item.primary {
+            color: #3498db;
             font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            margin: 10px;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .result-section {
-            background: #f8f9ff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .result-item {
+        
+        .language-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #e1e5e9;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
         }
-
-        .result-item:last-child {
-            border-bottom: none;
-            font-weight: 600;
-            font-size: 18px;
-            color: #667eea;
+        
+        .highlight-box {
+            background: rgba(52, 152, 219, 0.1);
+            border: 2px solid #3498db;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
         }
-
-        .payment-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            min-width: 600px;
+        
+        .highlight-box h4 {
+            color: #3498db;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
-
-        .payment-table th,
-        .payment-table td {
-            padding: 12px;
-            text-align: right;
-            border-bottom: 1px solid #e1e5e9;
+        
+        .highlight-box p {
+            font-size: 0.85rem;
+            line-height: 1.4;
         }
-
-        .payment-table th {
-            background: #667eea;
-            color: white;
-            font-weight: 600;
+        
+        /* Right Column */
+        .right-column {
+            padding: 30px;
         }
-
-        .payment-table tr:nth-child(even) {
-            background: #f8f9ff;
+        
+        .section {
+            margin-bottom: 25px;
         }
-
-        .grace-period {
-            background: #fff3cd !important;
-            color: #856404;
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 6px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
         }
-
-        .promo-period {
-            background: #d1ecf1 !important;
-            color: #0c5460;
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #e74c3c;
         }
-
-        .number-format {
-            text-align: right;
-        }
-
-        .highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-weight: 600;
+        
+        .summary {
+            font-size: 0.9rem;
+            line-height: 1.5;
             color: #555;
+            text-align: justify;
         }
-
-        .early-payment-row {
-            background: #fff3cd !important;
-            color: #856404;
+        
+        .experience-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .experience-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .job-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .company {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #3498db;
+            margin-bottom: 2px;
+        }
+        
+        .duration {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .location {
+            font-size: 0.8rem;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .job-description {
+            color: #555;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+        
+        .responsibilities {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 8px;
+        }
+        
+        .responsibilities li {
+            margin-bottom: 4px;
+            padding-left: 12px;
+            position: relative;
+            color: #555;
+            line-height: 1.4;
+            font-size: 0.8rem;
+        }
+        
+        .responsibilities li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #3498db;
             font-weight: bold;
         }
-
-        .penalty-row {
-            background: #f8d7da !important;
-            color: #721c24;
-            font-weight: bold;
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
-
+        
+        .tech-tag {
+            background: #34495e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        
+        .education-item {
+            margin-bottom: 15px;
+        }
+        
+        .degree {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+        
+        .institution {
+            color: #3498db;
+            font-weight: 600;
+            margin-bottom: 2px;
+            font-size: 0.85rem;
+        }
+        
+        .edu-duration {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
         @media (max-width: 768px) {
-            .input-group {
+            .cv-container {
                 grid-template-columns: 1fr;
+                margin: 10px;
             }
             
-            .payment-table {
-                font-size: 12px;
-                min-width: 550px;
+            .left-column {
+                padding: 30px 20px;
             }
             
-            .payment-table th,
-            .payment-table td {
-                padding: 6px 3px;
-                white-space: nowrap;
+            .right-column {
+                padding: 30px 20px;
             }
             
-            .container {
-                padding: 10px;
+            .job-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h1>Máy tính lãi suất ngân hàng</h1>
-                <p>Tính toán với ân hạn và lãi suất ưu đãi</p>
+    <div class="cv-container">
+        <!-- Left Column -->
+        <div class="left-column">
+            <div class="profile-section">
+                <img src="./1651072299514.jpeg" alt="Tin Dinh Profile Picture" class="profile-img">
+                <h1 class="name">Tin Dinh</h1>
+                <p class="title">Golang Developer</p>
             </div>
-            <div class="card-body">
-                <div class="input-group">
-                    <div class="form-group">
-                        <label for="loanAmount">Số tiền muốn vay (VNĐ)</label>
-                        <input type="text" id="loanAmount" value="800,000,000" min="0" oninput="formatNumberInput(this)">
-                    </div>
-                    <div class="form-group">
-                        <label for="interestRate">Lãi suất (%/năm)</label>
-                        <input type="number" id="interestRate" value="10" min="0" max="100" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="loanTerm">Số tháng vay</label>
-                        <input type="number" id="loanTerm" value="240" min="1">
-                    </div>
+            
+            <div class="left-section">
+                <h3>Contact</h3>
+                <div class="contact-item">
+                    <i>📧</i>
+                    <span>tindinhct93@gmail.com</span>
                 </div>
-
-                <div class="input-group">
-                    <div class="form-group">
-                        <label for="gracePeriod">Thời gian ân hạn (tháng)</label>
-                        <input type="number" id="gracePeriod" value="12" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="promoRate">Lãi suất ưu đãi (%/năm)</label>
-                        <input type="number" id="promoRate" value="5.5" min="0" max="100" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label for="promoPeriod">Thời gian ưu đãi (tháng)</label>
-                        <input type="number" id="promoPeriod" value="36" min="0">
-                    </div>
+                <div class="contact-item">
+                    <i>💼</i>
+                    <span>linkedin.com/in/tin-dinha06252211</span>
                 </div>
-
-                <div class="input-group">
-                    <div class="form-group">
-                        <label for="startDate">Ngày giải ngân</label>
-                        <input type="date" id="startDate" value="2025-09-12">
-                    </div>
+                <div class="contact-item">
+                    <i>📍</i>
+                    <span>Can Tho, Vietnam</span>
                 </div>
-
-                <div class="input-group">
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="earlyPayment" onchange="toggleEarlyPayment()" style="margin-right: 8px;" checked>
-                            Trả nợ trước hạn
-                        </label>
-                    </div>
+                <div class="contact-item">
+                    <i>💻</i>
+                    <span>Remote Available</span>
                 </div>
-
-                <div id="earlyPaymentInputs" class="input-group" style="display: block;">
-                    <div class="form-group">
-                        <label for="earlyPaymentMonth">Thời điểm trả nợ (tháng thứ)</label>
-                        <input type="number" id="earlyPaymentMonth" value="48" min="1">
-                    </div>
-                    <div class="form-group">
-                        <label for="penaltyRate">Phạt lãi suất (%)</label>
-                        <input type="number" id="penaltyRate" value="2" min="0" max="100" step="0.01">
-                    </div>
+            </div>
+            
+            <div class="left-section">
+                <h3>Core Skills</h3>
+                
+                <div class="skill-category">
+                    <h4>Programming</h4>
+                    <div class="skill-item">Golang (5+ years)</div>
+                    <div class="skill-item">JavaScript</div>
+                    <div class="skill-item">Python</div>
                 </div>
-
-                <div style="text-align: center;">
-                    <button class="btn" onclick="calculateLoan()">Tính toán</button>
-                    <button class="btn" onclick="showPaymentSchedule()">Xem lịch trả nợ</button>
+                
+                <div class="skill-category">
+                    <h4>Databases</h4>
+                    <div class="skill-item">MongoDB</div>
+                    <div class="skill-item">MySQL</div>
+                    <div class="skill-item">Redis</div>
                 </div>
-
-                <div id="results" class="result-section" style="display: none;">
-                    <h3>Kết quả tính toán</h3>
-                    <div class="result-item">
-                        <span>Số tiền gốc phải trả hàng tháng:</span>
-                        <span id="monthlyPrincipal" class="highlight">0 VNĐ</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Tổng gốc phải trả:</span>
-                        <span id="totalPrincipal">0 VNĐ</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Tổng lãi phải trả:</span>
-                        <span id="totalInterest">0 VNĐ</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Tổng số tiền cần trả:</span>
-                        <span id="totalPayment">0 VNĐ</span>
-                    </div>
+                
+                <div class="skill-category">
+                    <h4>Message Queues</h4>
+                    <div class="skill-item">RabbitMQ</div>
+                    <div class="skill-item">Apache Kafka</div>
                 </div>
-
-                <div id="earlyPaymentInfo" class="result-section" style="display: none;">
-                    <h3>Thông tin trả nợ trước hạn</h3>
-                    <div class="result-item">
-                        <span>Trả nợ vào tháng thứ:</span>
-                        <span id="earlyPaymentMonthDisplay" class="highlight">0</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Số tiền cần để trả nợ trước hạn:</span>
-                        <span id="earlyPaymentTotal" class="highlight">0 VNĐ</span>
-                    </div>
-                    <div class="result-item">
-                        <span>Phí phạt trả nợ trước hạn:</span>
-                        <span id="earlyPaymentPenalty" class="highlight">0 VNĐ</span>
-                    </div>
+                
+                <div class="skill-category">
+                    <h4>DevOps & Cloud</h4>
+                    <div class="skill-item ">Docker</div>
+                    <div class="skill-item ">Kubernetes</div>
+                    <div class="skill-item ">AWS</div>
+                    <div class="skill-item ">Azure</div>
+                    <div class="skill-item ">GCP</div>
                 </div>
-
-                <div id="scheduleModal" style="display: none;">
-                    <h3>Bảng tính lịch trả nợ</h3>
-                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <div id="scheduleTable"></div>
-                    </div>
+                
+                <div class="skill-category">
+                    <h4>E-commerce & APIs</h4>
+                    <div class="skill-item">Marketplace multi-channel Integration</div>
+                    <div class="skill-item">Warehouse Management</div>
+                </div>
+            </div>
+            
+            <div class="left-section">
+                <h3>Languages</h3>
+                <div class="language-item">
+                    <span>Vietnamese</span>
+                    <span>Native</span>
+                </div>
+                <div class="language-item">
+                    <span>English</span>
+                    <span>Professional</span>
                 </div>
             </div>
         </div>
+        
+        <!-- Right Column -->
+        <div class="right-column">
+            <section class="section">
+                <h2 class="section-title">Professional Summary</h2>
+                <p class="summary">
+                    Experienced Golang Developer with 5+ years of expertise in backend development, microservices architecture, and cloud technologies. Proven track record in building scalable applications using Golang, with strong proficiency in databases (MongoDB, PostgreSQL, MySQL) and message queuing systems (RabbitMQ, Kafka). Skilled in containerization with Docker and Kubernetes, cloud platforms (AWS, Azure, GCP), and CI/CD implementation. Available for contract work and open to second job arrangements.
+                </p>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title">Professional Experience</h2>
+                
+                <div class="experience-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="company">ZALORA Group</div>
+                            <div class="job-title">Golang Developer</div>
+                            <div class="location">Vietnam - Remote</div>
+                        </div>
+                        <div class="duration">April 2023 - Present</div>
+                    </div>
+                    <p class="job-description">
+                        Contributing to the backend development of Southeast Asia's leading fashion e-commerce platform.
+                    </p>
+                    <ul class="responsibilities">
+                        <li><strong>Engineered and deployed high-performance Golang microservices</strong> to manage logical stock, leveraging Redis to overcome limitations of the central OMS system and handle millions of daily transactions</li>
+                        <li><strong>Architected and implemented critical integration services</strong> connecting the central warehouse with multi-channel systems, including warehouse service partners and major marketplaces (Shopee, Lazada, Shopify, TikTok Shop)</li>
+                        <li><strong>Enhanced and maintained core warehouse management systems</strong>, improving key features such as inventory tracking, order processing, returns management, product cataloging, and supplier coordination</li>
+                        <li><strong>Developed generic, reusable components</strong> that accelerated the integration of external systems for order management, inventory, and returns processing</li>
+                        <li><strong>Implemented complex business logic</strong> for dynamic stock management, including reserved stock for promotions, multi-supplier inventory, and synchronized distribution across multiple sales channels</li>
+                        <li><strong>Orchestrated containerized application deployments</strong> using Docker and Kubernetes, ensuring scalable warehouse operations and comprehensive database management (MongoDB, PostgreSQL, MySQL)</li>
+                        <li><strong>Maintained robust CI/CD pipelines</strong> to ensure seamless and reliable deployment of integration services and warehouse management systems</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Golang</span>
+                        <span class="tech-tag">Redis</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">RabbitMQ</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Kubernetes</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Shopee API</span>
+                        <span class="tech-tag">Lazada API</span>
+                        <span class="tech-tag">Shopify API</span>
+                        <span class="tech-tag">TikTok Shop API</span>
+                        <span class="tech-tag">Warehouse Management</span>
+                        <span class="tech-tag">Multi-Channel Integration</span>
+                        <span class="tech-tag">CI/CD</span>
+                    </div>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="job-header">
+                        <div>
+                            <div class="company">VinBigData</div>
+                            <div class="job-title">AI Engineer Trainee / Backend Developer</div>
+                            <div class="location">Hanoi, Vietnam</div>
+                        </div>
+                        <div class="duration">July 2022 - March 2023</div>
+                    </div>
+                    <p class="job-description">
+                        Comprehensive training program at VinGroup's technology subsidiary, combining AI/ML expertise with backend development skills for technology innovation projects.
+                    </p>
+                    <ul class="responsibilities">
+                        <li>Completed intensive training in Machine Learning, Computer Vision, and Natural Language Processing</li>
+                        <li>Developed backend services using Golang and Python for AI-powered applications</li>
+                        <li>Implemented machine learning pipelines and data processing systems</li>
+                        <li>Worked with MongoDB and PostgreSQL for AI model data management</li>
+                        <li>Studied AI Ethics and responsible AI development practices</li>
+                        <li>Gained experience with cloud platforms and containerization for AI workloads</li>
+                        <li>Participated in real VinGroup production-level technology projects</li>
+                        <li>Collaborated with senior engineers on scalable AI system architecture</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Golang</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Machine Learning</span>
+                        <span class="tech-tag">Computer Vision</span>
+                        <span class="tech-tag">NLP</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">PyTorch</span>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="education-item">
+                    <div class="institution">VNUHCM - University of Science</div>
+                    <div class="degree">Bachelor's Degree, Information Technology</div>
+                    <div class="edu-duration">September 2019 - June 2022</div>
+                </div>
+                
+                <div class="education-item">
+                    <div class="institution">Can Tho University of Medicine and Pharmacy</div>
+                    <div class="degree">Pharmacist Degree</div>
+                    <div class="edu-duration">September 2011 - June 2016</div>
+                </div>
+            </section>
+        </div>
     </div>
-
-    <script>
-        function formatNumber(num) {
-            return new Intl.NumberFormat('en-US').format(Math.round(num));
-        }
-
-        function toggleEarlyPayment() {
-            const checkbox = document.getElementById('earlyPayment');
-            const inputs = document.getElementById('earlyPaymentInputs');
-            
-            if (checkbox.checked) {
-                inputs.style.display = 'block';
-            } else {
-                inputs.style.display = 'none';
-            }
-        }
-
-        function formatNumberInput(input) {
-            // Remove all non-digit characters
-            let value = input.value.replace(/\D/g, '');
-            
-            // Add commas every 3 digits
-            if (value) {
-                value = parseInt(value).toLocaleString('en-US');
-            }
-            
-            // Update the input value
-            input.value = value;
-        }
-
-        function getNumericValue(input) {
-            // Remove commas and return numeric value
-            return parseFloat(input.value.replace(/,/g, '')) || 0;
-        }
-
-        function updateURLWithParams() {
-            // Get current form values
-            const params = new URLSearchParams();
-            
-            // Get the numeric value from the loan amount input (remove commas)
-            const loanAmountInput = document.getElementById('loanAmount');
-            const amount = getNumericValue(loanAmountInput);
-            
-            params.set('amount', amount);
-            params.set('rate', document.getElementById('interestRate').value);
-            params.set('term', document.getElementById('loanTerm').value);
-            params.set('grace', document.getElementById('gracePeriod').value);
-            params.set('promoRate', document.getElementById('promoRate').value);
-            params.set('promoPeriod', document.getElementById('promoPeriod').value);
-            params.set('startDate', document.getElementById('startDate').value);
-            params.set('earlyPayment', document.getElementById('earlyPayment').checked);
-            params.set('earlyMonth', document.getElementById('earlyPaymentMonth').value);
-            params.set('penalty', document.getElementById('penaltyRate').value);
-            
-            // Update URL without page reload
-            const newURL = window.location.pathname + '?' + params.toString();
-            window.history.pushState({}, '', newURL);
-        }
-
-        function loadParamsFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.has('amount')) {
-                const amount = parseInt(params.get('amount'));
-                document.getElementById('loanAmount').value = amount.toLocaleString('en-US');
-            }
-            if (params.has('rate')) {
-                document.getElementById('interestRate').value = params.get('rate');
-            }
-            if (params.has('term')) {
-                document.getElementById('loanTerm').value = params.get('term');
-            }
-            if (params.has('grace')) {
-                document.getElementById('gracePeriod').value = params.get('grace');
-            }
-            if (params.has('promoRate')) {
-                document.getElementById('promoRate').value = params.get('promoRate');
-            }
-            if (params.has('promoPeriod')) {
-                document.getElementById('promoPeriod').value = params.get('promoPeriod');
-            }
-            if (params.has('startDate')) {
-                document.getElementById('startDate').value = params.get('startDate');
-            }
-            if (params.has('earlyPayment')) {
-                const isChecked = params.get('earlyPayment') === 'true';
-                document.getElementById('earlyPayment').checked = isChecked;
-                toggleEarlyPayment();
-            }
-            if (params.has('earlyMonth')) {
-                document.getElementById('earlyPaymentMonth').value = params.get('earlyMonth');
-            }
-            if (params.has('penalty')) {
-                document.getElementById('penaltyRate').value = params.get('penalty');
-            }
-        }
-
-        function calculateLoan() {
-            const loanAmount = getNumericValue(document.getElementById('loanAmount')) || 0;
-            const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
-            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 0;
-            const gracePeriod = parseInt(document.getElementById('gracePeriod').value) || 0;
-            const promoRate = parseFloat(document.getElementById('promoRate').value) || 0;
-            const promoPeriod = parseInt(document.getElementById('promoPeriod').value) || 0;
-            
-            // Early payment variables
-            const isEarlyPayment = document.getElementById('earlyPayment').checked;
-            const earlyPaymentMonth = parseInt(document.getElementById('earlyPaymentMonth').value) || 0;
-            const penaltyRate = parseFloat(document.getElementById('penaltyRate').value) || 0;
-
-            if (loanAmount <= 0 || loanTerm <= 0) {
-                alert('Vui lòng nhập số tiền vay và thời gian vay hợp lệ');
-                return;
-            }
-
-            if (gracePeriod >= loanTerm) {
-                alert('Thời gian ân hạn phải nhỏ hơn số tháng vay!');
-                return;
-            }
-
-            if (promoPeriod > loanTerm) {
-                alert('Thời gian ưu đãi không được vượt quá số tháng vay!');
-                return;
-            }
-
-            if (isEarlyPayment) {
-                if (earlyPaymentMonth <= gracePeriod) {
-                    alert('Thời điểm trả nợ trước hạn phải sau thời gian ân hạn!');
-                    return;
-                }
-                if (earlyPaymentMonth >= loanTerm) {
-                    alert('Thời điểm trả nợ trước hạn phải nhỏ hơn số tháng vay!');
-                    return;
-                }
-            }
-
-            const monthlyRateNormal = annualRate / 100 / 12;
-            const monthlyRatePromo = promoRate / 100 / 12;
-
-            // Calculate payments during different periods
-            let totalInterest = 0;
-            let currentBalance = loanAmount;
-            let earlyPaymentPenalty = 0;
-
-            // Simulate month by month calculation
-            const schedule = [];
-            let month = 1;
-
-            // Grace period - only interest, no principal
-            for (let i = 0; i < gracePeriod; i++) {
-                let rate = (i < promoPeriod) ? monthlyRatePromo : monthlyRateNormal;
-                let interestPayment = currentBalance * rate;
-                totalInterest += interestPayment;
-
-                schedule.push({
-                    month: month++,
-                    principalPayment: 0,
-                    interestPayment: interestPayment,
-                    totalPayment: interestPayment,
-                    remainingBalance: currentBalance,
-                    isGracePeriod: true,
-                    isPromoRate: i < promoPeriod
-                });
-            }
-
-            // Calculate remaining term after grace period
-            const remainingTerm = loanTerm - gracePeriod;
-            let remainingPromoTerm = Math.max(0, promoPeriod - gracePeriod);
-
-            if (remainingTerm > 0) {
-                // Simple calculation: divide principal evenly across remaining months
-                const monthlyPrincipal = Math.round(currentBalance / remainingTerm);
-
-                // Generate payment schedule for principal repayment period
-                let actualTerm = remainingTerm;
-                
-                // Check if early payment applies
-                if (isEarlyPayment && earlyPaymentMonth > gracePeriod && earlyPaymentMonth < loanTerm) {
-                    actualTerm = earlyPaymentMonth - gracePeriod;
-                }
-                
-                for (let i = 0; i < actualTerm; i++) {
-                    let isPromoMonth = i < remainingPromoTerm;
-                    let rate = isPromoMonth ? monthlyRatePromo : monthlyRateNormal;
-                    
-                    let interestPayment = Math.round(currentBalance * rate);
-                    let principalPayment = monthlyPrincipal;
-                    
-                    // Handle early payment scenario
-                    if (isEarlyPayment && i === actualTerm - 1) {
-                        // Pay off remaining balance early
-                        principalPayment = currentBalance;
-                        // Apply penalty to remaining balance
-                        earlyPaymentPenalty = Math.round(currentBalance * (penaltyRate / 100));
-                    } else if (i === actualTerm - 1 && !isEarlyPayment) {
-                        // Adjust last payment to clear remaining balance (normal scenario)
-                        principalPayment = currentBalance;
-                    }
-                    
-                    let monthlyPayment = principalPayment + interestPayment;
-                    
-                    currentBalance -= principalPayment;
-                    totalInterest += interestPayment;
-
-                    schedule.push({
-                        month: month++,
-                        principalPayment: principalPayment,
-                        interestPayment: interestPayment,
-                        totalPayment: monthlyPayment,
-                        remainingBalance: Math.max(0, currentBalance),
-                        isGracePeriod: false,
-                        isPromoRate: isPromoMonth,
-                        isEarlyPayment: isEarlyPayment && i === actualTerm - 1
-                    });
-                }
-                
-                // Add penalty to total if early payment
-                if (isEarlyPayment && earlyPaymentPenalty > 0) {
-                    totalInterest += earlyPaymentPenalty;
-                    // Add penalty as separate entry in schedule
-                    schedule.push({
-                        month: month,
-                        principalPayment: 0,
-                        interestPayment: earlyPaymentPenalty,
-                        totalPayment: earlyPaymentPenalty,
-                        remainingBalance: 0,
-                        isGracePeriod: false,
-                        isPromoRate: false,
-                        isPenalty: true
-                    });
-                }
-            }
-
-            // Store schedule for later use
-            window.paymentSchedule = schedule;
-
-            // Calculate monthly principal payment using correct formula
-            // Monthly principal = Total loan / (Total months - Grace period months)
-            const remainingTermDisplay = loanTerm - gracePeriod;
-            let monthlyPrincipalAmount = 0;
-            
-            if (remainingTermDisplay > 0) {
-                monthlyPrincipalAmount = Math.round(loanAmount / remainingTermDisplay);
-            }
-
-            // Display results
-            document.getElementById('monthlyPrincipal').textContent = formatNumber(monthlyPrincipalAmount) + ' VNĐ';
-            document.getElementById('totalPrincipal').textContent = formatNumber(loanAmount) + ' VNĐ';
-            document.getElementById('totalInterest').textContent = formatNumber(totalInterest) + ' VNĐ';
-            document.getElementById('totalPayment').textContent = formatNumber(loanAmount + totalInterest) + ' VNĐ';
-            
-            // Hide payment schedule table when calculating
-            document.getElementById('scheduleModal').style.display = 'none';
-            
-            // Show/hide early payment info
-            const earlyPaymentInfo = document.getElementById('earlyPaymentInfo');
-            if (isEarlyPayment && earlyPaymentMonth > 0 && earlyPaymentMonth < loanTerm) {
-                // Find the early payment month in the schedule to get the exact payment amount
-                let lastMonthPayment = 0;
-                if (window.paymentSchedule) {
-                    const earlyPaymentEntry = window.paymentSchedule.find(payment => 
-                        payment.month === earlyPaymentMonth && payment.isEarlyPayment
-                    );
-                    if (earlyPaymentEntry) {
-                        lastMonthPayment = earlyPaymentEntry.totalPayment;
-                    }
-                }
-                
-                // Total early payment = Last month payment + Penalty
-                const totalEarlyPayment = lastMonthPayment + earlyPaymentPenalty;
-                
-                document.getElementById('earlyPaymentMonthDisplay').textContent = earlyPaymentMonth;
-                document.getElementById('earlyPaymentTotal').textContent = formatNumber(totalEarlyPayment) + ' VNĐ';
-                document.getElementById('earlyPaymentPenalty').textContent = formatNumber(earlyPaymentPenalty) + ' VNĐ';
-                earlyPaymentInfo.style.display = 'block';
-            } else {
-                earlyPaymentInfo.style.display = 'none';
-            }
-
-            document.getElementById('results').style.display = 'block';
-            
-            // Update URL with current parameters
-            updateURLWithParams();
-        }
-
-        function showPaymentSchedule() {
-            if (!window.paymentSchedule) {
-                // Auto-trigger calculation if no data exists
-                calculateLoan();
-                if (!window.paymentSchedule) {
-                    return;
-                }
-            }
-
-            const startDate = new Date(document.getElementById('startDate').value);
-            let tableHTML = `
-                <table class="payment-table">
-                    <thead>
-                        <tr>
-                            <th>Kỳ hạn</th>
-                            <th>Ngày trả nợ</th>
-                            <th>Số tiền gốc còn</th>
-                            <th>Tiền gốc trả</th>
-                            <th>Tiền lãi trả</th>
-                            <th>Tổng phải trả</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-
-            let totalPrincipal = 0;
-            let totalInterest = 0;
-
-            window.paymentSchedule.forEach((payment, index) => {
-                const paymentDate = new Date(startDate);
-                paymentDate.setMonth(paymentDate.getMonth() + payment.month);
-                
-                totalPrincipal += payment.principalPayment;
-                totalInterest += payment.interestPayment;
-
-                let rowClass = '';
-                let monthLabel = payment.month;
-                
-                if (payment.isPenalty) {
-                    rowClass = 'penalty-row';
-                    monthLabel = 'Phí phạt';
-                } else if (payment.isEarlyPayment) {
-                    rowClass = 'early-payment-row';
-                    monthLabel = payment.month + ' (Trả sớm)';
-                } else if (payment.isGracePeriod) {
-                    rowClass = 'grace-period';
-                } else if (payment.isPromoRate) {
-                    rowClass = 'promo-period';
-                }
-
-                tableHTML += `
-                    <tr class="${rowClass}">
-                        <td>${monthLabel}</td>
-                        <td>${payment.isPenalty ? '-' : paymentDate.toLocaleDateString('vi-VN')}</td>
-                        <td class="number-format">${formatNumber(payment.remainingBalance)}</td>
-                        <td class="number-format">${formatNumber(payment.principalPayment)}</td>
-                        <td class="number-format">${formatNumber(payment.interestPayment)}</td>
-                        <td class="number-format">${formatNumber(payment.totalPayment)}</td>
-                    </tr>
-                `;
-            });
-
-            tableHTML += `
-                    <tr style="font-weight: bold; background: #667eea; color: white;">
-                        <td colspan="3">TỔNG</td>
-                        <td class="number-format">${formatNumber(totalPrincipal)}</td>
-                        <td class="number-format">${formatNumber(totalInterest)}</td>
-                        <td class="number-format">${formatNumber(totalPrincipal + totalInterest)}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="margin-top: 10px; font-size: 14px;">
-                <div style="padding: 5px; background: #fff3cd; margin: 5px 0; border-radius: 4px;">
-                    <strong>Ân hạn:</strong> Chỉ trả lãi, không trả gốc
-                </div>
-                <div style="padding: 5px; background: #d1ecf1; margin: 5px 0; border-radius: 4px;">
-                    <strong>Ưu đãi:</strong> Áp dụng lãi suất ưu đãi
-                </div>
-                <div style="padding: 5px; background: #f8f9ff; margin: 5px 0; border-radius: 4px;">
-                    <strong>Thường:</strong> Lãi suất bình thường
-                </div>
-            </div>
-            `;
-
-            document.getElementById('scheduleTable').innerHTML = tableHTML;
-            document.getElementById('scheduleModal').style.display = 'block';
-            
-            // Update URL with current parameters
-            updateURLWithParams();
-        }
-
-        // Initialize with current date and load URL parameters
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('startDate').value = today;
-            
-            // Load parameters from URL if they exist
-            loadParamsFromURL();
-            
-            // If URL has parameters, automatically calculate
-            if (window.location.search) {
-                // Use setTimeout to ensure DOM is fully ready
-                setTimeout(() => {
-                    calculateLoan();
-                }, 100);
-            }
-        });
-    </script>
 </body>
 </html>
